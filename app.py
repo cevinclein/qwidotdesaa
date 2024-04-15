@@ -1,21 +1,32 @@
 from flask import Flask, render_template
 import requests
+import markdown
+
 MyApp = Flask(__name__)
 
+# pip install markdown
+# pip install pymdown-extensions
+# pip install Pygments
+
+# Markdown flavor: https://daringfireball.net/projects/markdown/
+# Python Markdown: https://python-markdown.github.io/
+# Extensions flavor: https://facelessuser.github.io/pymdown-extensions/extras/slugs/
+
 def get_data():
-	section_num = 5
-	sections = ["Getting started", "Jupyter", "Paraview", "Vistle", "Post-Atom"]
-	urls = [
-	"https://raw.githubusercontent.com/bwvisu/bwvisu.github.io/master/user-docs/getting-started.md",
-	"https://raw.githubusercontent.com/bwvisu/bwvisu.github.io/master/user-docs/jupyter.md",
-	"https://raw.githubusercontent.com/bwvisu/bwvisu.github.io/master/user-docs/paraview.md",
-	"https://raw.githubusercontent.com/bwvisu/bwvisu.github.io/master/user-docs/vistle_get_started.md",
-	"https://raw.githubusercontent.com/bwvisu/bwvisu.github.io/master/user-docs/firststeps_post_atom.md"
-	] 
- 
+	repo_url = "https://raw.githubusercontent.com/cevinclein/bwviscodf/main"
+	
+	doc_config = requests.get(f"{repo_url}/doc-config.json").json()
+	
+	section_num = len(doc_config["section_names"])
+	sections = doc_config["section_names"]
+	
 	data = []
-	for i in urls:
-		data.append(requests.get(i).content.decode())
+	for i in range(section_num):
+		mardown_page = requests.get(f"{doc_config['url_prefix']}/{doc_config['index_name']}{i}.md").content.decode()
+		data.append(markdown.markdown(mardown_page, extensions=['pymdownx.extra', 'toc', 'nl2br', 'pymdownx.b64', 
+                                                                'pymdownx.highlight', 'pymdownx.keys', 'pymdownx.tasklist', 'pymdownx.arithmatex',
+                                                                'pymdownx.caret', 'pymdownx.emoji', 'pymdownx.magiclink', 'pymdownx.saneheaders',
+                                                                'pymdownx.smartsymbols', 'pymdownx.tilde', 'pymdownx.tabbed', 'pymdownx.details']))
 
 	return data, section_num, sections
    
@@ -27,4 +38,3 @@ def hello():
 
 if __name__ == "__main__":
 	MyApp.run()
- 	#MyApp.run(host="0.0.0.0", port=80)

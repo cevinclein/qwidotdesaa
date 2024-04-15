@@ -7,10 +7,39 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   
-  <script type="module" src="https://md-block.verou.me/md-block.js"></script>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  <script>
+
+    window.MathJax = {
+  options: {
+    ignoreHtmlClass: 'tex2jax_ignore',
+    processHtmlClass: 'tex2jax_process',
+    renderActions: {
+      find: [10, function (doc) {
+        for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+          const display = !!node.type.match(/; *mode=display/);
+          const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+          const text = document.createTextNode('');
+          const sibling = node.previousElementSibling;
+          node.parentNode.replaceChild(text, node);
+          math.start = {node: text, delim: '', n: 0};
+          math.end = {node: text, delim: '', n: 0};
+          doc.math.push(math);
+          if (sibling && sibling.matches('.MathJax_Preview')) {
+            sibling.parentNode.removeChild(sibling);
+          }
+        }
+      }, '']
+    }
+  }
+};
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  
   <nav class="navbar navbar-inverse navbar-static-top navbar-fixed-top">
     <div class="container-fluid">
       
@@ -60,9 +89,7 @@
 <div style="margin-left:200px">
   {% for i  in range(section_num): %}  
   <div id="d{{i}}" class="w3-container city w3-animate-left" {% if i == 0 %} style="display:block" {% else %} style="display:none" {% endif %}>
-    <md-block id="content">
-      {{gitwiki[i]}}
-    </md-block>
+    {{gitwiki[i] | safe}}
   </div>
   {% endfor %}
 </div>
