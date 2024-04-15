@@ -49,47 +49,22 @@
   </style>
 </head>
 
-
 <body style="margin-top: 56px;">
 <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:200px">
   <h5 class="w3-bar-item" style="border-bottom: 1px solid #cccccc;">User Doc</h5>
-  <button class="w3-bar-item w3-button tablink btncl" onclick="openCity(event, 'd0')">Getting started</button>
-  <button class="w3-bar-item w3-button tablink" onclick="openCity(event, 'd1')">Jupyter</button>
-  <button class="w3-bar-item w3-button tablink" onclick="openCity(event, 'd2')">Paraview</button>
-  <button class="w3-bar-item w3-button tablink" onclick="openCity(event, 'd3')">Vistle</button>
-  <button class="w3-bar-item w3-button tablink" onclick="openCity(event, 'd4')">Post-Atom</button>
+  {% for i  in range(section_num): %}  
+    <button class="w3-bar-item w3-button tablink {% if i == 0 %} btncl {% endif %}" onclick="openCity(event, 'd{{i}}')">{{sections[i]}}</button>
+  {% endfor %}
 </div>
 
 <div style="margin-left:200px">
-  <div id="d0" class="w3-container city w3-animate-left" style="display:block">
+  {% for i  in range(section_num): %}  
+  <div id="d{{i}}" class="w3-container city w3-animate-left" {% if i == 0 %} style="display:block" {% else %} style="display:none" {% endif %}>
     <md-block id="content">
-      {{gitwiki[0]}}
+      {{gitwiki[i]}}
     </md-block>
   </div>
-
-  <div id="d1" class="w3-container city w3-animate-left" style="display:none">
-    <md-block id="content">
-      {{gitwiki[1]}}
-    </md-block>
-  </div>
-
-  <div id="d2" class="w3-container city w3-animate-left" style="display:none">
-    <md-block id="content">
-      {{gitwiki[2]}}
-    </md-block>
-  </div>
-
-  <div id="d3" class="w3-container city w3-animate-left" style="display:none">
-    <md-block id="content">
-      {{gitwiki[3]}}
-    </md-block>
-  </div>
-
-  <div id="d4" class="w3-container city w3-animate-left" style="display:none">
-    <md-block id="content">
-      {{gitwiki[4]}}
-    </md-block>
-  </div>
+  {% endfor %}
 </div>
 
 <script>
