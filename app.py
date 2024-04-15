@@ -53,7 +53,8 @@ def get_data():
 		data.append(markdown.markdown(mardown_page, extensions=['pymdownx.extra', 'toc', 'nl2br', 'pymdownx.b64', 
                                                                 'pymdownx.highlight', 'pymdownx.keys', 'pymdownx.tasklist', 'pymdownx.arithmatex',
                                                                 'pymdownx.caret', 'pymdownx.emoji', 'pymdownx.magiclink', 'pymdownx.saneheaders',
-                                                                'pymdownx.smartsymbols', 'pymdownx.tilde', 'pymdownx.tabbed', 'pymdownx.details']))
+                                                                'pymdownx.smartsymbols', 'pymdownx.tilde', 'pymdownx.tabbed', 'pymdownx.details',
+                                                                'pymdownx.mark']))
 
 	return data, section_num, sections, doc_title
    
