@@ -1,113 +1,128 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!--We nee bootstrap 3 for the ondemand nav bar-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
+    <!--A template for a side bar layout and awesome font because ondemand is using this for navbar symbols-->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <script>
-
-    window.MathJax = {
-  options: {
-    ignoreHtmlClass: 'tex2jax_ignore',
-    processHtmlClass: 'tex2jax_process',
-    renderActions: {
-      find: [10, function (doc) {
-        for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
-          const display = !!node.type.match(/; *mode=display/);
-          const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-          const text = document.createTextNode('');
-          const sibling = node.previousElementSibling;
-          node.parentNode.replaceChild(text, node);
-          math.start = {node: text, delim: '', n: 0};
-          math.end = {node: text, delim: '', n: 0};
-          doc.math.push(math);
-          if (sibling && sibling.matches('.MathJax_Preview')) {
-            sibling.parentNode.removeChild(sibling);
+    <script>
+      // For markdown math it required to preset in which enviroment to search for latex
+      // more infos for the pymdownx.arithmatex extension can be found:
+      // https://facelessuser.github.io/pymdown-extensions/extensions/arithmatex/
+      window.MathJax = {
+        options: {
+          ignoreHtmlClass: 'tex2jax_ignore',
+          processHtmlClass: 'tex2jax_process',
+          renderActions: {
+            find: [10, function (doc) {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                const sibling = node.previousElementSibling;
+                
+                node.parentNode.replaceChild(text, node);
+                math.start = {node: text, delim: '', n: 0};
+                math.end = {node: text, delim: '', n: 0};
+                doc.math.push(math);
+                if (sibling && sibling.matches('.MathJax_Preview')) {
+                  sibling.parentNode.removeChild(sibling);
+                }
+              }
+            }, '']
           }
         }
-      }, '']
-    }
-  }
-};
-  </script>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+      };
+    </script>
 
-  
-  <nav class="navbar navbar-inverse navbar-static-top navbar-fixed-top">
-    <div class="container-fluid">
-      
-      <div class="navbar-header brand">
-        <span class="navbar-brand" href="#"><span class="brand">bwVisu Wiki<span/></span>
+    <!--Import mathjax, required for the pymdownx.arithmatex extension-->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+   
+    <!--It is recommended to build the ondemand navbar with bootsrap-->
+    <nav class="navbar navbar-inverse navbar-static-top navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header brand">
+          <span class="navbar-brand" href="#"><span class="brand">bwVisu Wiki<span/></span>
+        </div>
+       
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#"  onclick="history.back()"><i class="fa fa-angle-double-left dm"></i></span><span class="dm"> Go Back</span></a></li>
+          <li><a href="/pun/sys/dashboard/"><span class="glyphicon glyphicon-th dm"></span><span class="dm"> Dashboard</span></a></li>
+          <li><a href="/logout"><i class="fa fa-sign-out dm"></i><span class="dm"> Log Out</span></a></li>
+        </ul>
       </div>
-     
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"  onclick="history.back()"><i class="fa fa-angle-double-left dm"></i></span><span class="dm"> Go Back</span></a></li>
-        <li><a href="/pun/sys/dashboard/"><span class="glyphicon glyphicon-th dm"></span><span class="dm"> Dashboard</span></a></li>
-        <li><a href="/logout"><i class="fa fa-sign-out dm"></i><span class="dm"> Log Out</span></a></li>
-      </ul>
-    </div>
-  </nav>
+    </nav>
+    
+    <!--fix some style issues for example ondemand uses a height of 56px for the navbar-->
+    <style>
+      .navbar {
+        background-color: #c50c29;
+        border: 0;
+        height: 56px;
+      }
+      .dm {
+        color: white;
+        font-size: 16px;
+        margin-top: 3px;
+      }
+      .btncl {
+        background-color: #cccccc;
+      }
+      .brand {
+        margin-top: 3px;
+        color: white;
+        font-size: 20px;
+        
+      }
+      body {
+        margin-top: 56px;
+      }
+    </style>
+  </head>
   
-  <style>
-    .navbar{
-      background-color: #c50c29;
-      border: 0;
-      height: 56px;
-    }
-    .dm{
-      color: white;
-      font-size: 16px;
-      margin-top: 3px;
-    }
-    .btncl{
-      background-color: #cccccc;
-    }
-    .brand{
-      margin-top: 3px;
-      color: white;
-      font-size: 20px;
-      
-    }
-  </style>
-</head>
+  <body>
+    <!--dynamic template to add sections to the side bar-->
+    <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:200px">
+      <h5 class="w3-bar-item" style="border-bottom: 1px solid #cccccc;">{{doc_title}}</h5>
+      {% for i  in range(section_num): %}  
+        <button class="w3-bar-item w3-button tablink {% if i == 0 %} btncl {% endif %}" onclick="openSection(event, 'd{{i}}')">{{sections[i]}}</button>
+      {% endfor %}
+    </div>
 
-<body style="margin-top: 56px;">
-<div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:200px">
-  <h5 class="w3-bar-item" style="border-bottom: 1px solid #cccccc;">User Doc</h5>
-  {% for i  in range(section_num): %}  
-    <button class="w3-bar-item w3-button tablink {% if i == 0 %} btncl {% endif %}" onclick="openCity(event, 'd{{i}}')">{{sections[i]}}</button>
-  {% endfor %}
-</div>
-
-<div style="margin-left:200px">
-  {% for i  in range(section_num): %}  
-  <div id="d{{i}}" class="w3-container city w3-animate-left" {% if i == 0 %} style="display:block" {% else %} style="display:none" {% endif %}>
-    {{gitwiki[i] | safe}}
-  </div>
-  {% endfor %}
-</div>
-
-<script>
-  function openCity(evt, cityName) {
-    var i, x, tablinks;
-    x = document.getElementsByClassName("city");
-    for (i = 0; i < x.length; i++) {
-      x[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablink");
-    for (i = 0; i < x.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" btncl", ""); 
-    }
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " btncl";
-  }
-  </script>
-</body>
+    <!--dynamic template. We only want to display one sections and hide all the other sections-->
+    <div style="margin-left:200px">
+      {% for i  in range(section_num): %}  
+      <div id="d{{i}}" class="w3-container tab_section w3-animate-left" {% if i == 0 %} style="display:block" {% else %} style="display:none" {% endif %}>
+        {{gitwiki[i] | safe}}
+      </div>
+      {% endfor %}
+    </div>
+  
+    <script>
+      // The hide and display mechanism. If the user selects a desired section we hide all the 
+      // other sections and color the slelected section in light-gray on the sidebar.
+      function openSection(evt, cityName) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("tab_section");
+        for (i = 0; i < x.length; i++) {
+          x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" btncl", ""); 
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " btncl";
+      }
+    </script>
+  </body>
 </html>
