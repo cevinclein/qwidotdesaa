@@ -97,6 +97,12 @@
       {
       	list-style-type: disc;
       }
+      .md_content {
+        margin-left: 200px;
+      }
+      .md_content a:not(.md_content .toc a){
+        color: dodgerblue;
+      }
     </style>
   </head>
   
@@ -110,7 +116,7 @@
     </div>
 
     <!--dynamic template. We only want to display one sections and hide all the other sections-->
-    <div style="margin-left:200px">
+    <div class="md_content">
       {% for i  in range(section_num): %}  
       <div id="d{{i}}" class="w3-container tab_section w3-animate-left" {% if i == 0 %} style="display:block" {% else %} style="display:none" {% endif %}>
         {{gitwiki[i] | safe}}
