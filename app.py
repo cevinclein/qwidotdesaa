@@ -31,6 +31,21 @@ MyApp = Flask(__name__)
 # Python Markdown: https://python-markdown.github.io/
 # Extensions flavor: https://facelessuser.github.io/pymdown-extensions/extras/slugs/
 
+extension_configs = {
+	"pymdownx.emoji": {
+        "options": {
+            "attributes": {
+                "align": "absmiddle",
+                "height": "20px",
+                "width": "20px"
+            }  
+        }
+    },
+	"pymdownx.tasklist": {
+		"custom_checkbox":"True"
+	}
+}
+
 def get_data():
 	# specify the root path of the repo where alle the md filese are -> no / at the end of the url
 	repo_url = "https://raw.githubusercontent.com/cevinclein/bwviscodf/main"
@@ -50,10 +65,11 @@ def get_data():
 	for key, value in doc_config["section_names"].items():
 		sections.append(value)
 		mardown_page = requests.get(f"{doc_config['url_prefix']}/{key}.md").content.decode()
-		data.append(markdown.markdown(mardown_page, extensions=['pymdownx.extra', 'toc', 'nl2br', 'pymdownx.b64', 
-                                                                'pymdownx.highlight', 'pymdownx.keys', 'pymdownx.tasklist', 'pymdownx.arithmatex',
-                                                                'pymdownx.caret', 'pymdownx.emoji', 'pymdownx.magiclink', 'pymdownx.saneheaders',
-                                                                'pymdownx.smartsymbols', 'pymdownx.tilde', 'pymdownx.mark']))
+		data.append(markdown.markdown(mardown_page, 
+        extension_configs=extension_configs, extensions=['pymdownx.extra', 'toc', 'nl2br', 'pymdownx.b64', 
+                                                         'pymdownx.highlight', 'pymdownx.keys', 'pymdownx.tasklist', 'pymdownx.arithmatex',
+                                                         'pymdownx.caret', 'pymdownx.emoji', 'pymdownx.magiclink', 'pymdownx.saneheaders',
+                                                         'pymdownx.smartsymbols', 'pymdownx.tilde', 'pymdownx.mark']))
 
 	return data, section_num, sections, doc_title
    
