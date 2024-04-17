@@ -1,21 +1,25 @@
 from flask import Flask, render_template
 import requests
 import markdown
+from pathlib import Path
+import json
 
 MyApp = Flask(__name__)
 
-# This app reads out a git repo with md files and display it
-# in the wiki page
-
 """
+This app reads out a git repo with md files and display it
+in the wiki page. As an alternative also a local dir can be 
+read out.
+
+This file is placed among the other .md files in the repo 
+or in the local directory:
 
 [1] doc-config.json:
 
 {
-    "url_prefix":"url to the root of all .md files",
     "doc_title":"set the title of the Wiki",
     "section_names": {
-        "the filename of the .md file in the repo":"the section name displayed in the Wiki",
+        "the filename of the .md file in the repo or dir":"the section name displayed in the Wiki",
         "examplefileNamw (without .md)":"Example file name"
     }
 }
@@ -46,13 +50,20 @@ extension_configs = {
 	}
 }
 
+# specify the root path of the repo where alle the .md filese are -> no / at the end of the url
+REPO_URL = "https://raw.githubusercontent.com/cevinclein/bwviscodf/main"
+# Use Local files instead and ignore REPO_URL path
+ENABLE_REMOTE = False
+# Only applies if ENABLE_REMOTE = False
+LOCAL_PATH = Path("./local_notes")
+
 def get_data():
-	# specify the root path of the repo where alle the md filese are -> no / at the end of the url
-	repo_url = "https://raw.githubusercontent.com/cevinclein/bwviscodf/main"
-	
-	# We have to create a file[1] doc-config.json in the repo next to the md files
-	# In this file we can set section names an a title
-	doc_config = requests.get(f"{repo_url}/doc-config.json").json()
+	# Get the .md data locally or remotely
+	if ENABLE_REMOTE:
+		doc_config = requests.get(f"{REPO_URL}/doc-config.json").json()
+	else:
+		with open(LOCAL_PATH/"doc-config.json", "r") as config_file:
+			doc_config = json.loads(config_file.read())
 	
 	section_num = len(doc_config["section_names"])
 	sections = []
@@ -64,7 +75,12 @@ def get_data():
 	# and more
 	for key, value in doc_config["section_names"].items():
 		sections.append(value)
-		mardown_page = requests.get(f"{doc_config['url_prefix']}/{key}.md").content.decode()
+		if ENABLE_REMOTE:
+			mardown_page = requests.get(f"{REPO_URL}/{key}.md").content.decode()
+		else:
+			with open(LOCAL_PATH/f"{key}.md", "r") as md_file:
+				mardown_page = md_file.read()
+  
 		data.append(markdown.markdown(mardown_page, 
         extension_configs=extension_configs, extensions=['pymdownx.extra', 'toc', 'nl2br', 'pymdownx.b64', 
                                                          'pymdownx.highlight', 'pymdownx.keys', 'pymdownx.tasklist', 'pymdownx.arithmatex',
