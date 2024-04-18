@@ -102,6 +102,10 @@ def send_images(image_name):
 @MyApp.route("/pun/sys/images/<image_name>")
 def send_images_ond(image_name):
 	return send_file(LOCAL_PATH/"images"/f"{image_name}")
+
+@MyApp.route("/sys/images/<image_name>")
+def send_images_ond2(image_name):
+	return send_file(LOCAL_PATH/"images"/f"{image_name}")
 		
     
 
