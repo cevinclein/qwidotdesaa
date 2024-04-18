@@ -3,6 +3,7 @@ import requests
 import markdown
 from pathlib import Path
 import json
+import io
 
 MyApp = Flask(__name__)
 
@@ -53,9 +54,15 @@ extension_configs = {
 # specify the root path of the repo where alle the .md filese are -> no / at the end of the url
 REPO_URL = "https://raw.githubusercontent.com/cevinclein/bwviscodf/main"
 # Use Local files instead and ignore REPO_URL path
-ENABLE_REMOTE = False
+ENABLE_REMOTE = True
 # Only applies if ENABLE_REMOTE = False
+# All .md notes must be stored in this dir if if ENABLE_REMOTE = False
 LOCAL_PATH = Path("./local_notes")
+# For images create a images dir in the LOCAL_PATH dir
+# in markdown reference to images with (no leading /)APP_NAME/IMAGES_DIR_NAME/pic.something
+IMAGES_DIR_NAME = "images"
+# Must be the name of the root directory for ondemand
+APP_NAME = "bwVisu-Wiki"
 
 def get_data():
 	# Get the .md data locally or remotely
@@ -95,9 +102,14 @@ def site_root():
 	dt, sec_n, secs, dc_tit = get_data()
 	return render_template('index.html', gitwiki=dt, section_num=sec_n, sections=secs, doc_title=dc_tit)
 
-@MyApp.route("/images/<image_name>")
+@MyApp.route(f"/{IMAGES_DIR_NAME}/<image_name>")
+@MyApp.route(f"/{APP_NAME}/{IMAGES_DIR_NAME}/<image_name>")
 def send_images(image_name):
-	return send_file(LOCAL_PATH/"images"/f"{image_name}")
+	if ENABLE_REMOTE:
+		r = requests.get(f"{REPO_URL}/{IMAGES_DIR_NAME}/{image_name}")
+		return send_file(io.BytesIO(r.content), mimetype="application/octet-stream")
+	else:
+ 		return send_file(LOCAL_PATH/f"{IMAGES_DIR_NAME}"/f"{image_name}")
 
 if __name__ == "__main__":
 	MyApp.run()
