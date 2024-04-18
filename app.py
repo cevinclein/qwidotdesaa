@@ -95,13 +95,10 @@ def site_root():
 	dt, sec_n, secs, dc_tit = get_data()
 	return render_template('index.html', gitwiki=dt, section_num=sec_n, sections=secs, doc_title=dc_tit)
 
-@MyApp.route("/images/<image_name>")
-def send_images(image_name):
-	return send_file(LOCAL_PATH/"images"/f"{image_name}")
 
-@MyApp.route("/pun/sys/images/<image_name>")
+@MyApp.route("/bwVisu-Wiki/images/<image_name>")
 def send_images_ond(image_name):
-	return f"<h1>{image_name}</h1>" #send_file(LOCAL_PATH/"images"/f"{image_name}")
+	return send_file(LOCAL_PATH/"images"/f"{image_name}")
     
 
 if __name__ == "__main__":
