@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template, send_file, Response
 import requests
 import markdown
 from pathlib import Path
@@ -106,8 +106,18 @@ def site_root():
 @MyApp.route(f"/{APP_NAME}/{IMAGES_DIR_NAME}/<image_name>")
 def send_images(image_name):
 	if ENABLE_REMOTE:
+		# We only want to load images for security reasons
 		r = requests.get(f"{REPO_URL}/{IMAGES_DIR_NAME}/{image_name}")
-		return send_file(io.BytesIO(r.content), mimetype="application/octet-stream")
+		if ".svg" in image_name:
+			return Response(r.content.decode(), mimetype="image/svg+xml")
+		elif ".png" in image_name:
+			return send_file(io.BytesIO(r.content), mimetype="image/png")
+		elif ".jpg" in image_name or ".jpeg" in image_name:
+			return send_file(io.BytesIO(r.content), mimetype="image/jpeg")
+		elif ".gif" in image_name:
+			return send_file(io.BytesIO(r.content), mimetype="image/gif")
+		else:
+			return ""
 	else:
  		return send_file(LOCAL_PATH/f"{IMAGES_DIR_NAME}"/f"{image_name}")
 
