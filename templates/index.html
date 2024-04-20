@@ -300,6 +300,8 @@
     <div class="md_content">
       {% for i  in range(section_num): %}  
       <div id="d{{i}}" class="w3-container tab_section w3-animate-left" {% if i == 0 %} style="display:block" {% else %} style="display:none" {% endif %}>
+        <p style="color: #6b6b6b"><span style="font-size: 22px;">&#8962;</span>&nbsp;&nbsp;/&nbsp;&nbsp;bwVisu Wiki: {{sections[i]}}</p> <!--header-->
+        <hr />
         {{gitwiki[i] | safe}}
       </div>
       {% endfor %}
