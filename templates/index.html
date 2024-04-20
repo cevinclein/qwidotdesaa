@@ -86,6 +86,8 @@
       body {
         margin-top: 56px;
         background-color: #efefef;
+        /* Initialize counters for each heading level */
+        counter-reset: h1 0 h2 0 h3 0 h4 0 h5 0 h6 0;
       }
       .toc {
       	border: 1px solid #cccccc;
@@ -277,6 +279,64 @@
       }
       #hstack br{
         display: none;
+      }
+    
+      .md_content h1 {
+          counter-reset: h2 0 h3 0 h4 0 h5 0 h6 0;
+          counter-increment: h1;
+      }
+      .md_content h1::before {
+          content: counter(h1) ". ";
+      }
+      
+      .md_content h2 {
+          counter-reset: h3 0 h4 0 h5 0 h6 0;
+          counter-increment: h2;
+      }
+      .md_content h2::before {
+          content: counter(h1) "." counter(h2) ". ";
+      }
+      .md_content h3 {
+          counter-reset: h4 0 h5 0 h6 0;
+          counter-increment: h3;
+      }
+      .md_content h3::before {
+          content: counter(h1) "." counter(h2) "." counter(h3) ". ";
+      }
+      .md_content h4 {
+          counter-reset: h5 0 h6 0;
+          counter-increment: h4;
+      }
+      .md_content h4::before {
+          content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) ". ";
+      }
+      
+      .md_content h5 {
+          counter-reset: h6 0;
+          counter-increment: h5;
+      }
+      .md_content h5::before {
+          content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) ". ";
+      } 
+      .md_content h6 {
+          counter-increment: h6;
+      }
+      .md_content h6::before {
+          content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) "." counter(h6) ". ";
+      }
+
+      .toc ul {
+        /* This will reset the counter at each new ul element in the top level */
+        counter-reset: listItem;
+      }
+      .toc li {
+        /* Increment the listItem counter for each li */
+        counter-increment: listItem;
+      }
+      .toc li::before {
+        /* Display the current counter before the li content */
+        content: counters(listItem, ".") ". ";
+        margin-right: 5px; /* Adds spacing between the counter and the list text */
       }
     </style>
   </head>
