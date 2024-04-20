@@ -82,7 +82,7 @@ extension_configs = {
 # specify the root path of the repo where alle the .md filese are -> no / at the end of the url
 REPO_URL = "https://raw.githubusercontent.com/cevinclein/bwviscodf/main"
 # Use Local files instead and ignore REPO_URL path
-ENABLE_REMOTE = True
+ENABLE_REMOTE = False
 # Only applies if ENABLE_REMOTE = False
 # All .md notes must be stored in this dir if if ENABLE_REMOTE = False
 LOCAL_PATH = Path("./local_notes")
