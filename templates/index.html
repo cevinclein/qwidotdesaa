@@ -274,8 +274,8 @@
         content: "✔";
         color: #1EBB52;
       }
-      #hstack *{
-        float: left;
+      #hstack{
+        display: flex;
       }
       #hstack br{
         display: none;
@@ -335,7 +335,7 @@
       }
       .toc li::before {
         /* Display the current counter before the li content */
-        content: counters(listItem, ".") ". ";
+        content: counters(listItem, ".") ".";
         margin-right: 5px; /* Adds spacing between the counter and the list text */
       }
     </style>
