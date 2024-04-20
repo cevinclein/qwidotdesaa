@@ -5,6 +5,34 @@ from pathlib import Path
 import json
 import io
 
+from pymdownx.blocks import BlocksExtension
+from pymdownx.blocks.block import Block
+import xml.etree.ElementTree as etree
+
+###### Add custom element blocks #######
+
+# hstack --> horizontal alignment block:
+""" 
+/// hstack
+some content which will be alligned horizontally
+///
+"""
+
+class HstackBlock(Block):
+    NAME = 'hstack'
+    def on_create(self, parent):
+        return etree.SubElement(parent, 'div', id="hstack")
+
+class HstackBlockExtension(BlocksExtension):
+    def extendMarkdownBlocks(self, md, block_mgr):
+        block_mgr.register(HstackBlock, self.getConfigs())
+
+def makeExtension(*args, **kwargs):
+    """Return extension."""
+    return HstackBlockExtension(*args, **kwargs)
+
+###### Add custom element blocks #######
+
 MyApp = Flask(__name__)
 
 """
@@ -92,7 +120,7 @@ def get_data():
         extension_configs=extension_configs, extensions=['pymdownx.extra', 'toc', 'nl2br', 'pymdownx.b64', 
                                                          'pymdownx.highlight', 'pymdownx.keys', 'pymdownx.tasklist', 'pymdownx.arithmatex',
                                                          'pymdownx.caret', 'pymdownx.emoji', 'pymdownx.magiclink', 'pymdownx.saneheaders',
-                                                         'pymdownx.smartsymbols', 'pymdownx.tilde', 'pymdownx.mark']))
+                                                         'pymdownx.smartsymbols', 'pymdownx.tilde', 'pymdownx.mark', HstackBlockExtension()]))
 
 	return data, section_num, sections, doc_title
    
