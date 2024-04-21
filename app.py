@@ -80,7 +80,7 @@ extension_configs = {
 }
 
 # specify the root path of the repo where alle the .md filese are -> no / at the end of the url
-REPO_URL = "https://raw.githubusercontent.com/cevinclein/bwviscodf/main"
+REPO_URL = "<A public repo is needed>"
 # Use Local files instead and ignore REPO_URL path
 ENABLE_REMOTE = False
 # Only applies if ENABLE_REMOTE = False
