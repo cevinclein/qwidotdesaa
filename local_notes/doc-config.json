@@ -1,0 +1,10 @@
+{
+    "doc_title":"User Doc",
+    "section_names": {
+        "getting_started":"Getting started",
+        "basic_navigation":"Basic navigation",
+        "jupyterlab":"JupyterLab",
+        "rstudio":"RStudio",
+        "ki_morph":"KI-Morph"
+    }
+}
